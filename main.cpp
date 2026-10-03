@@ -1,8 +1,12 @@
 #include<iostream>
+#include "User/UserManager.h"
 using namespace std;
+
+UserManager manager;
 
 int main(){
         int choice;
+        bool loggedin=false;
         cout << "\n";
         cout << "==============================" << endl;
         cout << "    FLIGHT BOOKING SYSTEM" << endl;
@@ -21,10 +25,14 @@ int main(){
         switch(choice){
             case 1:
                 // sign up function
+                manager.signup();
                 cout<<"signed up"<<endl;
             case 2:
                 //log in function
-                cout<<"\nNow log in!"<<endl;
+                
+                while(loggedin==false){
+                    loggedin=manager.login();
+                }
                 return 0;
                 break;
             case 3:
