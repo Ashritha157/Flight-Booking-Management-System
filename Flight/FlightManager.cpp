@@ -40,14 +40,55 @@ void FlightManager::loadFlights() {
     );
 }
 
-void FlightManager::searchFlights(string source,
-                                   string destination,
-                                   string date) {
+Flight* FlightManager::searchFlights(string source,
+                                     string destination,
+                                     string date) {
 
-    bool found = false;
+    int count = 0;
 
     cout << "\nAvailable Flights\n";
     cout << "============================================================\n";
+
+    // Display all matching flights
+    for (Flight& flight : flights) {
+
+        if (flight.getSource() == source &&
+            flight.getDestination() == destination &&
+            flight.getDate() == date) {
+
+            count++;
+
+            cout << count << ". "
+                 << flight.getFlightNumber()
+                 << " | " << flight.getAirline()
+                 << " | " << flight.getDepartureTime()
+                 << " - " << flight.getArrivalTime()
+                 << " | Rs. " << flight.getPrice()
+                 << endl;
+        }
+    }
+
+    // No flights found
+    if (count == 0) {
+        cout << "No flights available.\n";
+        return nullptr;
+    }
+
+    cout << "============================================================\n";
+
+    int choice;
+
+    cout << "\nChoose a flight (1-" << count << "): ";
+    cin >> choice;
+
+    // Check whether choice is valid
+    if (choice < 1 || choice > count) {
+        cout << "Invalid flight choice.\n";
+        return nullptr;
+    }
+
+    // Find the selected flight
+    count = 0;
 
     for (Flight& flight : flights) {
 
@@ -55,22 +96,13 @@ void FlightManager::searchFlights(string source,
             flight.getDestination() == destination &&
             flight.getDate() == date) {
 
-            found = true;
+            count++;
 
-            cout << "Flight Number : " << flight.getFlightNumber() << endl;
-            cout << "Airline       : " << flight.getAirline() << endl;
-            cout << "From          : " << flight.getSource() << endl;
-            cout << "To            : " << flight.getDestination() << endl;
-            cout << "Date          : " << flight.getDate() << endl;
-            cout << "Departure     : " << flight.getDepartureTime() << endl;
-            cout << "Arrival       : " << flight.getArrivalTime() << endl;
-            cout << "Price         : Rs. " << flight.getPrice() << endl;
-
-            cout << "============================================================\n";
+            if (count == choice) {
+                return &flight;
+            }
         }
     }
 
-    if (!found) {
-        cout << "\nNo flights available for the given route and date.\n";
-    }
+    return nullptr;
 }
