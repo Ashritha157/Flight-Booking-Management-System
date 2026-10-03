@@ -2,9 +2,9 @@
 #include "User/UserManager.h"
 using namespace std;
 
-UserManager manager;
-
 int main(){
+    UserManager manager;
+manager.loadusers();
         int choice;
         bool loggedin=false;
         cout << "\n";
