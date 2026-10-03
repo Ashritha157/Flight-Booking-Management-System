@@ -12,6 +12,6 @@ private:
 
 public:
     void loadFlights();
-    void searchFlights(string source, string destination, string date);
+   Flight* searchFlights(string source, string destination, string date);
 };
 

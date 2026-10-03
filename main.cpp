@@ -13,6 +13,8 @@ int main(){
     string source;
     string destination;
     string date;
+    Flight* selectedFlight;
+
         int choice;
         bool loggedin=false;
         cout << "\n";
@@ -52,7 +54,48 @@ int main(){
                         cout << "Enter date (YYYY-MM-DD): ";
                         cin >> date;
 
-                        flightManager.searchFlights(source, destination, date);
+                        
+
+selectedFlight = flightManager.searchFlights(
+    source,
+    destination,
+    date
+);
+while(selectedFlight==nullptr){
+    selectedFlight = flightManager.searchFlights(
+    source,
+    destination,
+    date
+);
+}
+
+
+    cout << "\nYou selected:\n";
+
+    cout << "Flight Number : "
+         << selectedFlight->getFlightNumber() << endl;
+
+    cout << "Airline       : "
+         << selectedFlight->getAirline() << endl;
+
+    cout << "From          : "
+         << selectedFlight->getSource() << endl;
+
+    cout << "To            : "
+         << selectedFlight->getDestination() << endl;
+
+    cout << "Date          : "
+         << selectedFlight->getDate() << endl;
+
+    cout << "Departure     : "
+         << selectedFlight->getDepartureTime() << endl;
+
+    cout << "Arrival       : "
+         << selectedFlight->getArrivalTime() << endl;
+
+    cout << "Price         : Rs. "
+         << selectedFlight->getPrice() << endl;
+
                  }
 
                 return 0;
