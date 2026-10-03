@@ -8,4 +8,7 @@ class UserManager{
     public:
         void signup();
         bool login();
+        
+        void saveusers();
+        void loadusers();
 };
