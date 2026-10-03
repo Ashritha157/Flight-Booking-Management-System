@@ -1,10 +1,18 @@
 #include<iostream>
 #include "User/UserManager.h"
+#include "Flight/FlightManager.h"
 using namespace std;
 
 int main(){
     UserManager manager;
-manager.loadusers();
+    manager.loadusers();
+
+    FlightManager flightManager;
+    flightManager.loadFlights();
+
+    string source;
+    string destination;
+    string date;
         int choice;
         bool loggedin=false;
         cout << "\n";
@@ -33,6 +41,20 @@ manager.loadusers();
                 while(loggedin==false){
                     loggedin=manager.login();
                 }
+
+                 if(loggedin){
+                        cout << "\nEnter source: ";
+                        cin >> source;
+
+                        cout << "Enter destination: ";
+                        cin >> destination;
+
+                        cout << "Enter date (YYYY-MM-DD): ";
+                        cin >> date;
+
+                        flightManager.searchFlights(source, destination, date);
+                 }
+
                 return 0;
                 break;
             case 3:
@@ -54,9 +76,6 @@ manager.loadusers();
             cout<<"\nEnter your choice: ";
             cin>>choice;
         }
-
-        
-
 
     }while(choice!=3 || choice>3);
     return 0;
