@@ -5,6 +5,32 @@
 #include "Flight/FlightManager.h"
 using namespace std;
 
+class Meal {
+protected:
+    int price;
+
+public:
+    Meal(int p) : price(p) {}
+    virtual ~Meal() {}
+
+    // Polymorphic method to calculate charge
+    virtual double calculateCharge(int quantity) {
+        return price * quantity;
+    }
+};
+
+// Derived class for Veg Meal
+class VegMeal : public Meal {
+public:
+    VegMeal() : Meal(250) {}
+};
+
+// Derived class for Non-Veg Meal
+class NonVegMeal : public Meal {
+public:
+    NonVegMeal() : Meal(350) {}
+};
+
 void displaySeats(vector<vector<int>>& a) {
 
     cout << "\n========== SEAT MAP ==========\n\n";
@@ -262,24 +288,25 @@ if (mealChoice == 1)
         }
         else
         {
-            if (mealType == 1)
-            {
-                mealCharge = numberOfMeals * 250;
+           Meal* selectedMeal = nullptr;
 
-                cout << "\nVeg Meal selected." << endl;
-            }
-            else
-            {
-                mealCharge = numberOfMeals * 350;
+                if (mealType == 1)
+                {
+                    selectedMeal = new VegMeal();
+                    cout << "\nVeg Meal selected." << endl;
+                }
+                else
+                {
+                    selectedMeal = new NonVegMeal();
+                    cout << "\nNon-Veg Meal selected." << endl;
+                }
 
-                cout << "\nNon-Veg Meal selected." << endl;
-            }
+                mealCharge = selectedMeal->calculateCharge(numberOfMeals);
 
-            cout << "Quantity: "
-                 << numberOfMeals << endl;
+                cout << "Quantity: " << numberOfMeals << endl;
+                cout << "Meal charge: Rs. " << mealCharge << endl;
 
-            cout << "Meal charge: Rs. "
-                 << mealCharge << endl;
+                delete selectedMeal; // Clean up memory
         }
     }
     else
