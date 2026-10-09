@@ -4,6 +4,61 @@
 
 using namespace std;
 
+#ifdef _WIN32
+    #include <conio.h>
+#else
+    #include <termios.h>
+    #include <unistd.h>
+#endif
+
+
+
+// Helper function to capture password securely with '*' masking
+string getMaskedPassword() {
+    string password = "";
+    char ch;
+
+#ifdef _WIN32
+    while ((ch = _getch()) != '\r') { // '\r' is Enter on Windows
+        if (ch == '\b') { // Handle Backspace
+            if (!password.empty()) {
+                password.pop_back();
+                cout << "\b \b";
+            }
+        } else if (ch != 0 && ch != -32) { // Ignore special/arrow keys
+            password.push_back(ch);
+            cout << '*';
+        }
+    }
+    cout << endl;
+#else
+    // Disable echo in Linux/macOS terminal
+    termios oldt, newt;
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ECHO | ICANON);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+
+    while ((ch = getchar()) != '\n' && ch != EOF) {
+        if (ch == 127 || ch == 8) { // Handle Backspace
+            if (!password.empty()) {
+                password.pop_back();
+                cout << "\b \b";
+            }
+        } else {
+            password.push_back(ch);
+            cout << '*';
+        }
+    }
+    cout << endl;
+
+    // Restore terminal settings
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+#endif
+
+    return password;
+}
+
 bool UserManager::login() {
 
     string mailID;
@@ -15,7 +70,7 @@ bool UserManager::login() {
     cin >> mailID;
 
     cout << "Enter password: ";
-    cin >> password;
+    password = getMaskedPassword();
 
     for ( User& user : users) {
 
