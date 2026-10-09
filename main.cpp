@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include "User/UserManager.h"
 #include "Flight/FlightManager.h"
+#include <stdexcept>
 using namespace std;
 
 class Meal {
@@ -102,6 +103,21 @@ int main(){
                         cout << "Enter destination: ";
                         cin >> destination;
 
+                        
+                        try
+                        {
+                            if (source == destination)
+                            {
+                                throw invalid_argument(
+                                    "Source and destination cannot be the same."
+                                );
+                            }
+                        }
+                        catch (const invalid_argument& e)
+                        {
+                            cout << "Error: " << e.what() << endl;
+                            return 0;
+                        }
                         cout << "Enter date (YYYY-MM-DD): ";
                         cin >> date;
 
